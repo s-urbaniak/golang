@@ -8,7 +8,7 @@ func NewEelAndRabbit7() *EelAndRabbit {
 	l := []int{2, 4, 3, 2, 2, 1, 10}
 	t := []int{2, 6, 3, 7, 0, 2, 0}
 
-	return &EelAndRabbit{l, t}
+	return New(l, t)
 }
 
 func TestCatchOne(tst *testing.T) {
@@ -27,14 +27,16 @@ func TestCatchTwo(tst *testing.T) {
 
 func BenchmarkCatchOne(b *testing.B) {
 	e := NewEelAndRabbit7()
-	for i := 0; i < b.N; i++ {
-		e.CatchOne()
-	}
+	benchmarkCatch(b, e.CatchOne)
 }
 
 func BenchmarkCatchTwo(b *testing.B) {
 	e := NewEelAndRabbit7()
+	benchmarkCatch(b, e.CatchTwo)
+}
+
+func benchmarkCatch(b *testing.B, m EelAndRabbitAlgorithm) {
 	for i := 0; i < b.N; i++ {
-		e.CatchTwo()
+		m()
 	}
 }

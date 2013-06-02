@@ -1,5 +1,7 @@
 package eelandrabbit
 
+type EelAndRabbitAlgorithm func() int
+
 type EelAndRabbit struct {
 	l, t []int
 }
@@ -12,11 +14,19 @@ func max(a, b int) int {
 	}
 }
 
-func (e *EelAndRabbit) CatchOne() (m int) {
+func (e *EelAndRabbit) Init() *EelAndRabbit {
 	if len(e.l) != len(e.t) {
-		return 0
+		return nil
+	} else {
+		return e
 	}
+}
 
+func New(l, t []int) *EelAndRabbit {
+	return (&EelAndRabbit{l, t}).Init()
+}
+
+func (e *EelAndRabbit) CatchOne() (m int) {
 	m = 0
 
 	for a := 0; a < len(e.l); a++ {
@@ -39,10 +49,6 @@ func (e *EelAndRabbit) CatchOne() (m int) {
 }
 
 func (e *EelAndRabbit) CatchTwo() (m int) {
-	if len(e.l) != len(e.t) {
-		return 0
-	}
-
 	m = 0
 
 	for a := 0; a < len(e.l); a++ {
