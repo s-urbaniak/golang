@@ -1,13 +1,12 @@
 package stack
 
 import (
-	"container/list"
 	"testing"
 )
 
 func testStackState(s *Stack, t *testing.T, expectedSize int, expectedValue interface{}) {
-	if s.Size() != expectedSize {
-		t.Error(s.Size(), " != ", expectedSize)
+	if s.Len() != expectedSize {
+		t.Error(s.Len(), " != ", expectedSize)
 	}
 
 	if expectedSize > 0 {
@@ -55,7 +54,4 @@ func TestPop(t *testing.T) {
 	t.Log(s)
 	testPop(s, t, 1, "hello2")
 	testPop(s, t, 0, "hello")
-
-	l := list.New()
-	l.PushFront("hello")
 }

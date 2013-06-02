@@ -1,7 +1,7 @@
 package eelandrabbit
 
-type EeelAndRabbit interface {
-	GrabEels(l, t []int) (m int)
+type EelAndRabbit struct {
+	l, t []int
 }
 
 func max(a, b int) int {
@@ -12,20 +12,20 @@ func max(a, b int) int {
 	}
 }
 
-func CatchOne(l, t []int) (m int) {
-	if len(l) != len(t) {
+func (e *EelAndRabbit) CatchOne() (m int) {
+	if len(e.l) != len(e.t) {
 		return 0
 	}
 
 	m = 0
 
-	for a := 0; a < len(l); a++ {
+	for a := 0; a < len(e.l); a++ {
 		grabbed := 0
-		head_a := t[a]
+		head_a := e.t[a]
 
-		for b := 0; b < len(l); b++ {
-			head_b := t[b]
-			tail_b := t[b] + l[b]
+		for b := 0; b < len(e.l); b++ {
+			head_b := e.t[b]
+			tail_b := e.t[b] + e.l[b]
 
 			if head_b <= head_a && tail_b >= head_a {
 				grabbed++
@@ -38,22 +38,22 @@ func CatchOne(l, t []int) (m int) {
 	return
 }
 
-func CatchTwo(l, t []int) (m int) {
-	if len(l) != len(t) {
+func (e *EelAndRabbit) CatchTwo() (m int) {
+	if len(e.l) != len(e.t) {
 		return 0
 	}
 
 	m = 0
 
-	for a := 0; a < len(l); a++ {
-		for b := 0; b < len(l); b++ {
+	for a := 0; a < len(e.l); a++ {
+		for b := 0; b < len(e.l); b++ {
 			grabbed := 0
-			head_a := t[a]
-			head_b := t[b]
+			head_a := e.t[a]
+			head_b := e.t[b]
 
-			for c := 0; c < len(l); c++ {
-				head_c := t[c]
-				tail_c := t[c] + l[c]
+			for c := 0; c < len(e.l); c++ {
+				head_c := e.t[c]
+				tail_c := e.t[c] + e.l[c]
 
 				if (head_c <= head_a && tail_c >= head_a) ||
 					(head_c <= head_b && tail_c >= head_b) {
