@@ -14,6 +14,10 @@ type Element struct {
 	next  *Element
 }
 
+func New() *Stack {
+	return new(Stack)
+}
+
 func (s *Stack) String() string {
 	return fmt.Sprintf("%T size=%v, top=[%v]", s, s.Len(), s.top)
 }
