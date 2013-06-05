@@ -40,13 +40,12 @@ func (g *Game) IterNeighbours(p Pos) chan Pos {
 	return ch
 }
 
-func New(rows []string) *Game {
+func (g *Game) Init(rows []string) *Game {
 	row_cnt := len(rows)
 	if row_cnt < 1 {
 		return nil
 	}
 
-	g := new(Game)
 	g.letters = make([][]rune, row_cnt)
 
 	col_cnt := 0
@@ -62,6 +61,9 @@ func New(rows []string) *Game {
 	}
 
 	g.size = BoardSize{row_cnt, col_cnt}
-
 	return g
+}
+
+func New(rows []string) *Game {
+	return new(Game).Init(rows)
 }
