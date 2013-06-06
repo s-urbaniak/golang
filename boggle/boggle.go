@@ -12,19 +12,37 @@ type BoardSize struct {
 
 type Vertex int
 
-func NewVertex(i int, s *BoardSize) (Vertex, bool) {
-	if i >= 0 && i < s.m*s.n {
-		return Vertex(i), true
-	} else {
-		return -1, false
+type DfsCb func(Vertex)
+
+func dfs(cb DfsCb, adj [][]Vertex, u Vertex) {
+	visited := make(map[Vertex]bool)
+	dfsVisit(cb, visited, adj, u)
+}
+
+func dfsVisit(cb DfsCb, visited map[Vertex]bool, adj [][]Vertex, u Vertex) {
+	cb(u)
+	visited[u] = true
+
+	for _, v := range adj[u] {
+		if !visited[v] {
+			dfsVisit(cb, visited, adj, v)
+		}
 	}
 }
 
-func NewVertexFromCoords(x, y int, s *BoardSize) (Vertex, bool) {
-	if x >= 0 && y >= 0 && x < s.n && y < s.m {
-		return Vertex(y*s.m + x), true
+func NewVertex(i int, s *BoardSize) Vertex {
+	if i >= 0 && i < s.m*s.n {
+		return Vertex(i)
 	} else {
-		return -1, false
+		return -1
+	}
+}
+
+func NewVertexFromCoords(x, y int, s *BoardSize) Vertex {
+	if x >= 0 && y >= 0 && x < s.n && y < s.m {
+		return Vertex(y*s.m + x)
+	} else {
+		return -1
 	}
 }
 
@@ -37,8 +55,8 @@ func (v *Vertex) IterNeighbours(s *BoardSize) chan Vertex {
 	go func() {
 		for y := -1; y <= 1; y++ {
 			for x := -1; x <= 1; x++ {
-				n, valid := NewVertexFromCoords(vx+x, vy+y, s)
-				if valid && n != *v {
+				n := NewVertexFromCoords(vx+x, vy+y, s)
+				if n >= 0 && n != *v {
 					ch <- n
 				}
 			}
