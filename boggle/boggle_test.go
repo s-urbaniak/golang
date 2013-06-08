@@ -12,7 +12,11 @@ func TestNewGame(t *testing.T) {
 		t.Error("expecting non nil value")
 	}
 
-	b.Dfs(Vertex(4), "efi", func(v Vertex) {
-		t.Log(v)
+	found := b.Dfs(Vertex(0), "abefefe", func(v Vertex) {
+		t.Log(string(b.letters[v]))
 	})
+
+	if !found {
+		t.Error("not found")
+	}
 }

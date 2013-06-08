@@ -18,23 +18,31 @@ type Vertex int
 
 type DfsCb func(Vertex)
 
-func (g *Game) Dfs(u Vertex, word string, cb DfsCb) {
-	visited := make(map[Vertex]bool)
+func (g *Game) Dfs(u Vertex, word string, cb DfsCb) bool {
+	letters := []rune(word)
+	li := 0
 	s := stack.New()
-
 	s.Push(u)
 
 	for s.Len() > 0 {
 		v := s.Pop().(Vertex)
-		if !visited[v] {
-			cb(v)
-			visited[v] = true
 
-			for _, a := range g.adj[v] {
-				s.Push(a)
+		if letters[li] == g.letters[v] {
+			cb(v)
+
+			if li == len(letters)-1 {
+				return true
+			} else {
+				li++
+
+				for _, a := range g.adj[v] {
+					s.Push(a)
+				}
 			}
 		}
 	}
+
+	return false
 }
 
 func NewVertex(i int, s *BoardSize) Vertex {
@@ -53,7 +61,7 @@ func NewVertexFromCoords(x, y int, s *BoardSize) Vertex {
 	}
 }
 
-func (v *Vertex) IterNeighbours(s *BoardSize) chan Vertex {
+func (v *Vertex) IterNeighbours(s *BoardSize) <-chan Vertex {
 	ch := make(chan Vertex)
 
 	vx := int(*v) % s.n
