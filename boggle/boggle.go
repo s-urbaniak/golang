@@ -1,5 +1,9 @@
 package boggle
 
+import (
+	"s-urbaniak/stack"
+)
+
 type Game struct {
 	size    BoardSize
 	adj     [][]Vertex
@@ -14,18 +18,21 @@ type Vertex int
 
 type DfsCb func(Vertex)
 
-func dfs(cb DfsCb, adj [][]Vertex, u Vertex) {
+func (g *Game) Dfs(u Vertex, word string, cb DfsCb) {
 	visited := make(map[Vertex]bool)
-	dfsVisit(cb, visited, adj, u)
-}
+	s := stack.New()
 
-func dfsVisit(cb DfsCb, visited map[Vertex]bool, adj [][]Vertex, u Vertex) {
-	cb(u)
-	visited[u] = true
+	s.Push(u)
 
-	for _, v := range adj[u] {
+	for s.Len() > 0 {
+		v := s.Pop().(Vertex)
 		if !visited[v] {
-			dfsVisit(cb, visited, adj, v)
+			cb(v)
+			visited[v] = true
+
+			for _, a := range g.adj[v] {
+				s.Push(a)
+			}
 		}
 	}
 }
